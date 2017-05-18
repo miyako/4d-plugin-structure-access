@@ -25,4 +25,4 @@ xml|TEXT|Structure definition
 
 ### Remarks
 
-You should use (IMPORT STRUCTURE)[http://doc.4d.com/4Dv15/4D/15/IMPORT-STRUCTURE.301-2044957.en.html] on v15 or later.
+You should use [IMPORT STRUCTURE](http://doc.4d.com/4Dv15/4D/15/IMPORT-STRUCTURE.301-2044957.en.html) on v15 or later.
