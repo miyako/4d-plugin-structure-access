@@ -81,8 +81,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: windows-binaries
-          path: |
-            test/Plugins/${{ env.PRODUCT_NAME }}.bundle/Contents/Windows64/${{ env.PRODUCT_NAME }}.4DX
+          path: 'Structure Access.4dbase/plugins/Structure Access.bundle/contents/windows64/Structure Access.4DX'
           if-no-files-found: error
 
   build-macos:
