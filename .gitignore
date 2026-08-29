@@ -1,1 +1,3 @@
 build/*
+.vs/*
+Structure Access.vcxproj.user
