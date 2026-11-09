@@ -1,3 +1,4 @@
 build/*
 .vs/*
 Structure Access.vcxproj.user
+__pycache__/

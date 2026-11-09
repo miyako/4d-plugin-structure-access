@@ -1,5 +1,56 @@
 # 4d-plugin-structure-access
 
+## Manual source versioning and publication
+
+**Bump version** and **Build** are separate manual Actions workflows. Select the
+intended branch in the Actions UI; neither a push nor a tag starts Build.
+Bump version accepts `patch`, `minor`, or `major` and commits source metadata only
+to that explicitly selected branch. Build has no inputs and builds the immutable
+selected `github.sha` on any branch, not an existing typed tag.
+
+The six `MARKETING_VERSION` settings are the strict `X.Y.Z` authority. The six
+`CURRENT_PROJECT_VERSION` settings, source `Info.plist` version fields when
+present, and English localized short/info versions must agree. Known resolving
+Xcode version references are preserved, and absent `CFBundleVersion` stays absent.
+The old bump header promised coordinated marketing/current-project versions but
+its implementation only advanced marketing: history from `d9f2433` through
+`072f2ca` left current-project at 1.0.0. This migration repairs it and the
+localized 1.0 override to the existing 1.0.9 authority, without a release increment.
+Prebuilt bundles, the 4D database/API, manifest command IDs, plist schema versions,
+and localization revision counters are not release-version inputs.
+
+Bump requires a clean checkout, exact selected commit and remote branch SHA.
+It uses a mandatory executable pre-push hook to compare receive-pack's advertised
+old SHA against that selected SHA, rejecting advances, rewinds, deletions and
+same-result races even after the last remote check. Push is nonforce, with both
+`push.followTags=false` and `--no-follow-tags`; no tag or Build is triggered.
+After a successful bump, select the updated branch and run Build separately.
+
+Build preserves Windows x64/MSBuild v143 and macOS universal arm64/x86_64 builds,
+the bundled 4D API and Apple framework dependencies, Windows artifact transfer,
+universal verification, Developer ID signing/verification, ZIP/DMG notarization
+and DMG stapling. It publishes `Structure Access-X.Y.Z.zip` and
+`Structure Access-X.Y.Z.dmg` with the original empty release notes policy.
+All branches share one publication concurrency group.
+
+Before native work and again immediately after all packaging/signing/notary/staple
+gates, authenticated paginated releases (including drafts) and remote tags must
+prove the source-derived `vX.Y.Z` absent. API/auth/network/schema errors, including
+404 and failures on later pages, stop publication. The tag is create-only at the
+selected SHA and verified remotely; a same-SHA creation race also fails.
+A separate create-only release POST is followed by asset uploads to that new
+release ID. There is no overwrite, update, deletion, rollback or automatic retry.
+
+**Manual recovery:** a failure may leave only a tag, a published release with no
+assets, or a release with some assets. Inspect the Actions error and retained
+remote state before taking any manual action. Do not rerun expecting repair:
+existing tags and draft/published releases deliberately block subsequent runs.
+Decide manually whether to complete that publication outside these workflows or
+use a newly bumped version. Never silently replace an existing release or asset.
+
+Local checks (no native build, signing or publication):
+`python3 -m unittest discover -s .github/tests -v` and `actionlint`.
+
 **Create Elements from XML** is a 4D plugin command that allows a 4D application to create database structure elements from an XML definition.
 
 The underlying 4D Plugin API operation supports creating:
