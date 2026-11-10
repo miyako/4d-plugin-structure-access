@@ -1,0 +1,23 @@
+name: Native ownership
+
+on:
+  push:
+    branches: [miyako-structure-access-ownership, master]
+    paths:
+      - '4D Plugin API/**'
+      - '4DPlugin.cpp'
+      - '4DPlugin.h'
+      - '.github/tests/ownership*'
+      - '.github/tests/test_ownership.py'
+      - '.github/workflows/ownership.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  ownership:
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Complete SDK and all-wrapper synthetic ASan/UBSan host
+        run: python3 .github/tests/test_ownership.py -v
