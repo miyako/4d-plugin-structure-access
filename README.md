@@ -633,3 +633,11 @@ CREATE ELEMENTS FROM XML($xml)
 The command is best suited to **database structure creation and deployment**, not ordinary application record processing.
 
 The plugin itself performs no XML transformation and no additional database processing; it forwards the supplied XML to the corresponding 4D Plugin API operation.
+## Native ownership audit
+
+The dormant native wrappers' ownership contracts, fixes, synthetic-host
+regressions and explicit limits are documented in
+[the ownership audit](.github/tests/ownership-audit.md).
+Run the isolated, unsigned macOS checks with
+`python3 .github/tests/test_ownership.py -v`; this does not build the plugin
+or invoke 4D/database operations.
