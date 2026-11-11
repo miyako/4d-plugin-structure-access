@@ -1,5 +1,5 @@
 ﻿/* Localized versions of Info.plist keys */
 
 CFBundleName = "Structure Access";
-CFBundleShortVersionString = "1.0.10";
-CFBundleGetInfoString = "Structure Access version 1.0.10, Copyright 2017 miyako.";
+CFBundleShortVersionString = "1.0.11";
+CFBundleGetInfoString = "Structure Access version 1.0.11, Copyright 2017 miyako.";
