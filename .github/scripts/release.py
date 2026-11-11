@@ -29,6 +29,12 @@ def api(endpoint, payload=None, asset=None):
     return json.loads(run(*command, input=json.dumps(payload) if payload is not None else None))
 
 
+def github_asset_name(name):
+    """Name GitHub stores for an uploaded asset: it replaces characters such as
+    spaces with "." ("Structure Access-1.0.zip" -> "Structure.Access-1.0.zip")."""
+    return re.sub(r"[^A-Za-z0-9._-]", ".", name)
+
+
 def selected_sha(sha):
     if not re.fullmatch(r"[0-9a-f]{40}", sha):
         raise ValueError("Expected immutable selected github.sha")
@@ -136,7 +142,7 @@ def publish(sha, assets):
             not isinstance(result, dict)
             or type(result.get("id")) is not int
             or result["id"] <= 0
-            or result.get("name") != asset.name
+            or result.get("name") not in (asset.name, github_asset_name(asset.name))
             or result.get("size") != asset.stat().st_size
             or result.get("state") != "uploaded"
         ):

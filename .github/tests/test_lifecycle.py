@@ -461,7 +461,7 @@ class GitTests(unittest.TestCase):
                     raise subprocess.CalledProcessError(1, ["gh", "api"])
                 self.uploaded.append(asset.name)
                 return {} if malformed == "asset" else {
-                    "id": 456, "name": asset.name, "size": asset.stat().st_size, "state": "uploaded"
+                    "id": 456, "name": asset.name.replace(" ", "."), "size": asset.stat().st_size, "state": "uploaded"
                 }
             raise AssertionError(endpoint)
         return api
@@ -535,6 +535,11 @@ class GitTests(unittest.TestCase):
         self.assertEqual(len(self.failure_retention(malformed="asset")), 4)
         self.assertEqual(self.published["id"], 42)
         self.assertEqual(self.uploaded, [f"Structure Access-{self.version}.zip"])
+
+    def test_github_asset_name_sanitises_spaces_only(self):
+        self.assertEqual(release.github_asset_name("Structure Access-1.0.10.zip"),
+                         "Structure.Access-1.0.10.zip")
+        self.assertEqual(release.github_asset_name("plain-1.0.zip"), "plain-1.0.zip")
 
     def test_final_recheck_blocks_new_draft(self):
         paths = self.assets()
